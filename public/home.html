@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitBlog — Home</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">⚡ FitBlog</div>
+    <div class="navbar-actions">
+      <span id="welcomeUser"></span>
+      <button class="btn-sm btn-accent" id="writeBtn">+ Write Post</button>
+      <button class="btn-sm btn-outline" id="logoutBtn">Log out</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag">Fitness &amp; Wellness</div>
+    <h1>Fuel Your <span>Gains</span><br />Feed Your Mind.</h1>
+    <p>Workouts, nutrition, recovery and mindset — everything you need to become your strongest self.</p>
+  </section>
+
+  <!-- MOST VIEWED -->
+  <section class="section">
+    <div class="section-header">
+      <h2>🔥 Trending</h2>
+    </div>
+    <div class="trending-row" id="trendingRow"></div>
+  </section>
+
+  <!-- LATEST POSTS -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Latest Posts</h2>
+      <span id="postCount"></span>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Search posts..." />
+      <select id="sortBySelect">
+        <option value="createdAt">Date</option>
+        <option value="title">Title</option>
+      </select>
+      <select id="sortOrderSelect">
+        <option value="desc">Newest</option>
+        <option value="asc">Oldest</option>
+      </select>
+    </div>
+
+    <div class="posts-grid" id="postsGrid"></div>
+
+    <!-- PAGINATION -->
+    <div class="pagination" id="pagination"></div>
+  </section>
+
+  <!-- CREATE POST MODAL -->
+  <div class="modal-overlay" id="createPostOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Write a Post</h3>
+        <button class="modal-close" id="closeCreatePost">&times;</button>
+      </div>
+      <div class="error-msg" id="createPostError"></div>
+      <form id="createPostForm">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" id="postTitle" placeholder="e.g. My 12-Week Transformation" required />
+        </div>
+        <div class="form-group">
+          <label>Content</label>
+          <textarea id="postContent" rows="6" placeholder="Share your fitness journey..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" id="createPostBtn">Publish Post</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- POST DETAIL / COMMENTS MODAL -->
+  <div class="modal-overlay" id="postDetailOverlay">
+    <div class="modal modal-large">
+      <div class="modal-header">
+        <h3 id="detailTitle"></h3>
+        <button class="modal-close" id="closePostDetail">&times;</button>
+      </div>
+      <div class="detail-meta" id="detailMeta"></div>
+      <p class="detail-content" id="detailContent"></p>
+
+      <div class="comments-section">
+        <h4 class="comments-heading">Comments</h4>
+
+        <form id="commentForm" class="comment-form">
+          <input type="text" id="commentInput" placeholder="Add a comment..." />
+          <button type="submit" class="btn-sm btn-accent">Post</button>
+        </form>
+
+        <div class="error-msg" id="commentError"></div>
+        <div id="commentsList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/home.js"></script>
+</body>
+</html>

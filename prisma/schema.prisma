@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model User {
+  id        String   @id @default(cuid())
+  password  String
+  email     String   @unique
+  username  String   @default("anonymous") @unique
+  createdAt DateTime @default(now())
+  profile   Profile?
+  posts     Post[]
+  comments  Comment[]
+  likes    Like[]
+  notifications Notification[]
+}
+
+model Profile {
+  id         String   @id @default(cuid())
+  bio        String   @default("anonymous")
+  location   String?
+  pronoun    String?
+  image      String?
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Post {
+  id        String    @id @default(cuid())
+  title     String
+  content   String
+  image     String?
+  published Boolean   @default(false)
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  comments  Comment[]
+  likes     Like[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])        // get all posts by a user
+  @@index([createdAt])     // get latest posts
+  @@index([published])     // filter published/unpublished posts
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([postId])        // get all comments on a post
+  @@index([userId])        // get all comments by a user
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@index([postId])        // count/fetch likes on a post
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  message   String
+  read      Boolean          @default(false)
+  userId    String
+  user      User             @relation(fields: [userId], references: [id])
+  createdAt DateTime         @default(now())
+
+  @@index([userId])        // get all notifications for a user
+  @@index([read])          // filter read/unread notifications
+}
+
+enum NotificationType {
+  LIKE
+  COMMENT
+}

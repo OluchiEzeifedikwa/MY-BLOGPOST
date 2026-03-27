@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log In — FitBlog</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="auth-page">
+
+  <div class="auth-banner">
+    <div class="logo">⚡ FitBlog</div>
+    <h1>Welcome<br /><span>Back.</span></h1>
+    <p>Your next PR is waiting. Log in and get back to what you love — lifting, running, and growing stronger every day.</p>
+  </div>
+
+  <div class="auth-form-side">
+    <h2>Log in to FitBlog</h2>
+    <p class="subtitle">Good to have you back.</p>
+
+    <div class="error-msg" id="errorMsg"></div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Your password" required />
+      </div>
+      <button type="submit" class="btn btn-primary" id="submitBtn">Log In</button>
+    </form>
+
+    <div class="form-footer">
+      Don't have an account? <a href="/signup.html">Sign up</a>
+    </div>
+  </div>
+
+  <script src="/js/login.js"></script>
+</body>
+</html>
