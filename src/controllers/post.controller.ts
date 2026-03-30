@@ -32,7 +32,7 @@ export async function getAllPosts(req: AuthRequest, res: Response, next: NextFun
       ...(limit ? { limit: Number(limit) } : {}),
       ...(search ? { search: search as string } : {}),
       ...(userId ? { userId: userId as string } : {}),
-      ...(sortBy ? { sortBy: sortBy as 'createdAt' | 'title' } : {}),
+      ...(sortBy ? { sortBy: sortBy as 'createdAt' | 'userId' } : {}),
       ...(sortOrder ? { sortOrder: sortOrder as 'asc' | 'desc' } : {})
     })
 

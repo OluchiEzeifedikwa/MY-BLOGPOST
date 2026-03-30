@@ -51,9 +51,9 @@ model Post {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  @@index([userId])        // get all posts by a user
-  @@index([createdAt])     // get latest posts
-  @@index([published])     // filter published/unpublished posts
+  @@index([userId])
+  @@index([title])
+  @@index([createdAt])
 }
 
 model Comment {

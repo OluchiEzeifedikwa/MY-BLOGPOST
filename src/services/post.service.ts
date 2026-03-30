@@ -18,7 +18,7 @@ export async function getAllPostsService({
   limit?: number
   search?: string
   userId?: string
-  sortBy?: 'createdAt' | 'title'
+  sortBy?: 'createdAt' | 'userId'
   sortOrder?: 'asc' | 'desc'
 } = {}) {
   const [{ posts, total }, viewCounts] = await Promise.all([
@@ -26,7 +26,7 @@ export async function getAllPostsService({
       where: {
         published: true,
         ...(userId ? { userId } : {}),
-        ...(search ? { OR: [{ title: { contains: search, mode: 'insensitive' as const } }, { content: { contains: search, mode: 'insensitive' as const } }] } : {})
+        ...(search ? { user: { username: { startsWith: search, mode: 'insensitive' as const } } } : {})
       },
       orderBy: { [sortBy]: sortOrder },
       skip: (page - 1) * limit,
@@ -75,3 +75,4 @@ export async function deletePostService(id: string, userId: string) {
   if (post.userId !== userId) throw new AppError(403, 'Not authorized')
   return deletePost(id)
 }
+

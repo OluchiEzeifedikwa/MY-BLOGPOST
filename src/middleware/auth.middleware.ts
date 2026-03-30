@@ -1,7 +1,8 @@
 import type { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secret'
+const JWT_SECRET = process.env.JWT_SECRET as string
+if (!JWT_SECRET) throw new Error('JWT_SECRET is not set')
 
 export interface AuthRequest extends Request {
   userId?: string
@@ -16,7 +17,7 @@ export function authenticate(req: AuthRequest, res: Response, next: NextFunction
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string }
+    const decoded = jwt.verify(token, JWT_SECRET) as unknown as { userId: string }
     req.userId = decoded.userId
     next()
   } catch {
@@ -28,7 +29,7 @@ export function optionalAuthenticate(req: AuthRequest, _res: Response, next: Nex
   const token = req.cookies?.token
   if (token) {
     try {
-      const decoded = jwt.verify(token, JWT_SECRET) as { userId: string }
+      const decoded = jwt.verify(token, JWT_SECRET) as unknown as { userId: string }
       req.userId = decoded.userId
     } catch {}
   }
