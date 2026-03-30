@@ -14,4 +14,4 @@ RUN pnpm exec prisma generate
 
 EXPOSE 3000
 
-CMD ["pnpm", "exec", "tsx", "src/index.ts"]
+CMD ["sh", "-c", "pnpm exec prisma migrate deploy && pnpm exec tsx src/index.ts"]
