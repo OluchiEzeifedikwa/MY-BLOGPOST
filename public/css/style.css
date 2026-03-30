@@ -797,7 +797,22 @@ textarea:focus {
   .auth-banner { display: none; }
   .auth-form-side { width: 100%; padding: 40px 24px; }
   .hero h1 { font-size: 2.2rem; }
-  .navbar { padding: 0 20px; }
-  .hero, .section { padding-left: 20px; padding-right: 20px; }
+  .navbar { padding: 0 16px; }
+  .hero, .section { padding-left: 16px; padding-right: 16px; }
   .hero { padding-top: 40px; }
+
+  .navbar-actions { gap: 8px; }
+  .navbar-actions span { display: none; }
+
+  .posts-grid { grid-template-columns: 1fr; }
+
+  .controls { flex-direction: column; }
+  .controls input { min-width: unset; width: 100%; }
+  .controls select { width: 100%; }
+
+  .modal { padding: 20px 16px; }
+  .modal-large { max-width: 100%; }
+
+  .comment-form { flex-direction: column; }
+  .comment-form button { width: 100%; padding: 10px; }
 }
