@@ -10,14 +10,18 @@ CommentViewSchema.index({ commentId: 1, userId: 1 }, { unique: true })
 
 const CommentViewModel = mongoose.model('CommentView', CommentViewSchema)
 
-export async function logCommentView(commentId: string, userId: string) {
-  await CommentViewModel.updateOne(
-    { commentId, userId },
-    { $set: { viewedAt: new Date() } },
-    { upsert: true }
-  )
+class CommentViewRepository {
+  async logView(commentId: string, userId: string) {
+    await CommentViewModel.updateOne(
+      { commentId, userId },
+      { $set: { viewedAt: new Date() } },
+      { upsert: true }
+    )
+  }
+
+  async getViewCount(commentId: string) {
+    return CommentViewModel.countDocuments({ commentId })
+  }
 }
 
-export async function getCommentViewCount(commentId: string) {
-  return CommentViewModel.countDocuments({ commentId })
-}
+export default new CommentViewRepository()

@@ -2,12 +2,13 @@ import type { Response, NextFunction } from 'express'
 import type { AuthRequest } from '../middleware/auth.middleware.ts'
 import { createPostService, getAllPostsService, getPostService, updatePostService, deletePostService, getMostViewedPostsService } from '../services/post.service.ts'
 import { uploadImage } from '../lib/uploadImage.ts'
+import { createPostSchema, updatePostSchema } from '../lib/schemas.ts'
 
 export async function createPost(req: AuthRequest, res: Response, next: NextFunction) {
   try {
-    const { title, content, published } = req.body
-    if (!title || !content) {
-      res.status(400).json({ message: 'Title and content are required' })
+    const parsed = createPostSchema.safeParse(req.body)
+    if (!parsed.success) {
+      res.status(400).json({ message: parsed.error.issues[0]?.message })
       return
     }
 
@@ -16,7 +17,8 @@ export async function createPost(req: AuthRequest, res: Response, next: NextFunc
       image = await uploadImage(req.file.buffer)
     }
 
-    const post = await createPostService({ title, content, userId: req.userId!, published: published === true || published === 'true', ...(image ? { image } : {}) })
+    const { title, content, published } = parsed.data
+    const post = await createPostService({ title, content, userId: req.userId!, ...(published !== undefined ? { published } : {}), ...(image ? { image } : {}) })
     res.status(201).json(post)
   } catch (error) {
     next(error)
@@ -62,7 +64,18 @@ export async function getMostViewedPosts(_req: AuthRequest, res: Response, next:
 
 export async function updatePost(req: AuthRequest, res: Response, next: NextFunction) {
   try {
-    const post = await updatePostService(req.params['id'] as string, req.userId!, req.body)
+    const parsed = updatePostSchema.safeParse(req.body)
+    if (!parsed.success) {
+      res.status(400).json({ message: parsed.error.issues[0]?.message })
+      return
+    }
+
+    const { title, content, published } = parsed.data
+    const post = await updatePostService(req.params['id'] as string, req.userId!, {
+      ...(title !== undefined ? { title } : {}),
+      ...(content !== undefined ? { content } : {}),
+      ...(published !== undefined ? { published } : {})
+    })
     res.status(200).json(post)
   } catch (error) {
     next(error)
